@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * This is the main class of the application. 
+ * It demonstrates how to use the DBConnector singleton to connect to a database, 
+ * create a table, insert data, and retrieve data.
+ */
+
 public class Main {
     
     public static void main(String[] args) {
