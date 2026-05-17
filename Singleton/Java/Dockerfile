@@ -1,17 +1,21 @@
-FROM openjdk:17
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-COPY app /app
-
 # Install wget
-RUN apt-get update && apt-get install -y wget
+RUN apk add --no-cache wget
 
 # Download MySQL JDBC driver
 RUN wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.3.0/mysql-connector-j-8.3.0.jar
 
-# Compile Java source files
-RUN javac -cp .:mysql-connector-j-8.3.0.jar *.java
+# Copy your local "app" directory into a matching nested folder layout
+COPY app /app/Singleton/Java/app
 
-# Run application
-CMD ["java", "-cp", ".:mysql-connector-j-8.3.0.jar", "Main"]
+# Explicitly point the CLASSPATH to the root (/app) and the jar file
+ENV CLASSPATH=.:/app:/app/mysql-connector-j-8.3.0.jar
+
+# Compile from the root directory using the full path
+RUN javac /app/Singleton/Java/app/*.java
+
+# Execute using the Fully Qualified Class Name
+CMD ["java", "Singleton.Java.app.Main"]
